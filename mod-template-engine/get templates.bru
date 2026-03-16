@@ -1,0 +1,25 @@
+meta {
+  name: get templates
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/templates
+  body: none
+  auth: none
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
