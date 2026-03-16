@@ -1,0 +1,30 @@
+meta {
+  name: Get authorities by id
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/authority-storage/authorities/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  id: f10883bb-2a70-4137-b7d6-284bd6619345
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  x-okapi-token: {{okapi-token}}
+  ~x-okapi-token: {{folio-user-token}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

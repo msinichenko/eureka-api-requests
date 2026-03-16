@@ -1,0 +1,28 @@
+meta {
+  name: Get authorities
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/authority-storage/authorities
+  body: none
+  auth: none
+}
+
+params:query {
+  ~deleted: false
+  ~query: id==02fe0d3f-2cfa-4a71-909a-04547b7d80d4
+  ~query: naturalId=n2016004082
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  x-okapi-token: {{okapi-token}}
+  ~x-okapi-token: {{folio-user-token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

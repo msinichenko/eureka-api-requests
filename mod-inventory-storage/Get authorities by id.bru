@@ -1,0 +1,29 @@
+meta {
+  name: Get authorities by id
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/instance-storage/instances/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  id: c788ec9b-eb2c-448c-a87d-ef1c075d62ca
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  x-okapi-token: {{okapi-token}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
