@@ -1,0 +1,11 @@
+meta {
+  name: mod-reading-room
+}
+
+auth {
+  mode: inherit
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}

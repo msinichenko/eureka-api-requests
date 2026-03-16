@@ -1,0 +1,32 @@
+meta {
+  name: get status role migration
+  type: http
+  seq: 15
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/roles-keycloak/migrations/:job_id
+  body: json
+  auth: none
+}
+
+params:query {
+  ~query: description=System generated role during migration
+  ~query: name=Admin
+}
+
+params:path {
+  job_id: 99a73960-4a6b-45f7-9240-b391948f4b99
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}settings {
+  encodeUrl: true
+  timeout: 0
+}

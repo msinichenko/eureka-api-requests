@@ -1,0 +1,30 @@
+meta {
+  name: Update keyckloak realm confg
+  type: http
+  seq: 8
+}
+
+put {
+  url: https://keycloak-{{folio}}.int.aws.folio.org/admin/realms/{{realm}}
+  body: json
+  auth: bearer
+}
+
+headers {
+  ~Content-Type: application/x-www-form-urlencoded
+}
+
+auth:bearer {
+  token: {{master-realm-token}}
+}
+
+body:json {
+  {
+      "loginTheme": "base"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

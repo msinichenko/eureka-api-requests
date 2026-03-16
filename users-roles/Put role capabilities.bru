@@ -1,0 +1,42 @@
+meta {
+  name: Put role capabilities
+  type: http
+  seq: 20
+}
+
+put {
+  url: https://kong-{{folio}}.{{domain}}/roles/:role_id/capabilities
+  body: json
+  auth: none
+}
+
+params:query {
+  ~query: description=System generated role during migration
+}
+
+params:path {
+  role_id: b176efb6-716a-4985-a3d5-3ab62cfa26f9
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+      "capabilityIds":
+      [
+          "60493fd5-5e2d-49cb-b6c8-c38a7f075482",
+          "2c73d626-e9be-4a47-8605-d0dab8295cf1",
+          "62a60747-f302-467e-a6be-ed1ccbfcf82b"
+      ]
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}settings {
+  encodeUrl: true
+  timeout: 0
+}

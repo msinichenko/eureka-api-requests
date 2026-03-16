@@ -1,0 +1,21 @@
+meta {
+  name: instance status
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/search/index/instance-records/reindex/status
+  body: none
+  auth: none
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

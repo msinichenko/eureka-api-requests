@@ -1,0 +1,37 @@
+meta {
+  name: Start instance remapping with login with expiry
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/marc-migrations?
+  body: json
+  auth: none
+}
+
+params:query {
+  : 
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  ~x-okapi-token: {{okapi-token}}
+  ~x-okapi-token: {{folio-user-token}}
+}
+
+body:json {
+  {
+      "entityType": "instance",
+      "operationType": "remapping"
+  }
+}
+
+script:pre-request {
+  // const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

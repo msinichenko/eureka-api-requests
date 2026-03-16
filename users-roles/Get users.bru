@@ -1,0 +1,34 @@
+meta {
+  name: Get users
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/users?limit=1000
+  body: none
+  auth: none
+}
+
+params:query {
+  limit: 1000
+  ~query: username=z3950Admin
+  ~query: username=ecs_admin
+  ~query: username=ecs_0011_admin
+  ~query: username=fs09000000
+  ~query: id=4bbf8b11-e5cc-4725-b65a-947d7ccc36d2
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

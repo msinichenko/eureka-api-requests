@@ -1,0 +1,32 @@
+meta {
+  name: custom-fields
+  type: http
+  seq: 13
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/custom-fields
+  body: json
+  auth: inherit
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+  x-okapi-module-id: mod-users-19.5.1
+}
+
+body:json {
+  {
+    "name": "originalTenantId",
+    "entityType": "user",
+    "helpText": "Id of tenant where user created originally",
+    "visible": false,
+    "type": "TEXTBOX_LONG"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

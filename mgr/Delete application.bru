@@ -1,0 +1,28 @@
+meta {
+  name: Delete application
+  type: http
+  seq: 29
+}
+
+delete {
+  url: https://kong-{{folio}}.{{domain}}/applications/:app_id
+  body: json
+  auth: none
+}
+
+params:path {
+  app_id: app-platform-complete-3.0.1-SNAPSHOT.1086
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

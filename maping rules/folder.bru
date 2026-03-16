@@ -1,0 +1,11 @@
+meta {
+  name: maping rules
+}
+
+auth {
+  mode: inherit
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}

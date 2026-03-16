@@ -1,0 +1,49 @@
+meta {
+  name: Delete eureka tenant
+  type: http
+  seq: 11
+}
+
+delete {
+  url: https://kong-{{folio}}.{{domain}}/tenants/:tenant_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  tenant_id: 9ad2b6cf-83c3-4627-bc9b-1710dbfd1bee
+}
+
+headers {
+  x-okapi-token: {{master-realm-token}}
+}
+
+script:post-response {
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  Deletes a specific tenant from the Eureka system.
+  
+  **Purpose:**
+  Removes the tenant identified by `tenant_id` from the system. This action is irreversible and will permanently delete all associated data for the specified tenant.
+  
+  **Required Parameters:**
+  - `tenant_id` (path variable): The unique identifier of the tenant to be deleted. Example: `3097ee2e-002e-421b-a47d-5e6f476b734b`
+  
+  **Authentication:**
+  - Requires a valid `x-okapi-token` header. The token must have administrative privileges to perform tenant deletion.
+  
+  **Expected Behavior:**
+  - On success, returns a 204 No Content status, indicating the tenant was deleted.
+  - If the tenant does not exist, returns a 404 Not Found.
+  - If authentication fails or permissions are insufficient, returns a 401 or 403 error.
+  
+  **When to use:**
+  Use this endpoint when you need to permanently remove a tenant and all its data from the Eureka environment. Ensure you have backed up any necessary information before proceeding.
+}

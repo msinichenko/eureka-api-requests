@@ -1,0 +1,36 @@
+meta {
+  name: Assign role to user
+  type: http
+  seq: 24
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/roles/users
+  body: json
+  auth: none
+}
+
+params:query {
+  ~: 
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+    "userId": "c78a9aa5-a6dc-4d1c-bbb3-6dc862f98ae0",
+    "roleIds": [
+      "e581f9b0-493d-4c5a-be44-1b0bb3daec5c"
+    ]
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}settings {
+  encodeUrl: true
+  timeout: 0
+}

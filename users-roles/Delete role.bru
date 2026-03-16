@@ -1,0 +1,34 @@
+meta {
+  name: Delete role
+  type: http
+  seq: 12
+}
+
+delete {
+  url: https://kong-{{folio}}.{{domain}}/roles/329c9ae1-dae8-45c2-a175-df74dc29851d
+  body: json
+  auth: none
+}
+
+params:query {
+  ~: 
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+    "name": "role-name-test",
+    "description": "role description"
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}settings {
+  encodeUrl: true
+  timeout: 0
+}

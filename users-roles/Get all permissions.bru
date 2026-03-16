@@ -1,0 +1,37 @@
+meta {
+  name: Get all permissions
+  type: http
+  seq: 10
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/perms/permissions
+  body: none
+  auth: none
+}
+
+params:query {
+  ~query: permission==addresstypes.item.delete
+  ~limit: 100
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+      "username": "testuser1",
+      "password": "secure_password"
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

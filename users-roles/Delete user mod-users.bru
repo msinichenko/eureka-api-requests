@@ -1,0 +1,27 @@
+meta {
+  name: Delete user mod-users
+  type: http
+  seq: 6
+}
+
+delete {
+  url: https://kong-{{folio}}.{{domain}}/users/:user_id
+  body: json
+  auth: none
+}
+
+params:path {
+  user_id: 6e9e425e-683d-4937-9301-ecb06c0938b6
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}settings {
+  encodeUrl: true
+  timeout: 0
+}

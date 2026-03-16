@@ -1,0 +1,163 @@
+meta {
+  name: Get entitlements
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/entitlements?limit=500
+  body: none
+  auth: inherit
+}
+
+params:query {
+  limit: 500
+  ~query: tenantId==b1f63200-03c4-419c-8c42-56aca1f96ef4
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: example
+  
+  request: {
+    url: https://kong-{{folio}}.{{domain}}/entitlements?limit=20
+    method: GET
+    mode: none
+    params:query: {
+      ~query: tenantId==b1f63200-03c4-419c-8c42-56aca1f96ef4
+      limit: 20
+    }
+  }
+  
+  response: {
+    headers: {
+      date: Thu, 12 Mar 2026 09:40:11 GMT
+      content-type: application/json
+      transfer-encoding: chunked
+      connection: keep-alive
+      vary: accept-encoding
+      access-control-allow-origin: *
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "totalRecords": 203,
+          "entitlements": [
+            {
+              "applicationId": "app-acquisitions-1.0.28",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-bulk-edit-1.0.9",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-dcb-1.1.10",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-edge-complete-2.0.16",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-erm-usage-2.0.4",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-fqm-1.0.15",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-inn-reach-1.0.6",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-linked-data-1.1.6",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-marc-migrations-2.0.5",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-mosaic-1.0.0",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-oai-pmh-1.0.3",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-platform-complete-2.5.5",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-platform-minimal-2.0.51",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-reading-room-2.0.2",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-rtac-cache-1.0.0",
+              "tenantId": "194f3e3e-5b6d-4d5a-929d-32dad7e9a652",
+              "modules": []
+            },
+            {
+              "applicationId": "app-acquisitions-1.0.28",
+              "tenantId": "1a13db4d-58fb-469d-b682-8e007d4a8a9b",
+              "modules": []
+            },
+            {
+              "applicationId": "app-bulk-edit-1.0.9",
+              "tenantId": "1a13db4d-58fb-469d-b682-8e007d4a8a9b",
+              "modules": []
+            },
+            {
+              "applicationId": "app-consortia-1.2.3",
+              "tenantId": "1a13db4d-58fb-469d-b682-8e007d4a8a9b",
+              "modules": []
+            },
+            {
+              "applicationId": "app-dcb-1.1.10",
+              "tenantId": "1a13db4d-58fb-469d-b682-8e007d4a8a9b",
+              "modules": []
+            },
+            {
+              "applicationId": "app-edge-complete-2.0.16",
+              "tenantId": "1a13db4d-58fb-469d-b682-8e007d4a8a9b",
+              "modules": []
+            }
+          ]
+        }
+      '''
+    }
+  }
+}

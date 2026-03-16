@@ -1,0 +1,32 @@
+meta {
+  name: Update keyckloak client confg
+  type: http
+  seq: 7
+}
+
+put {
+  url: https://keycloak-{{folio}}.int.aws.folio.org/admin/realms/{{realm}}/clients/189fa605-2556-43e0-9f25-438e58ee329e
+  body: json
+  auth: bearer
+}
+
+headers {
+  ~Content-Type: application/x-www-form-urlencoded
+}
+
+auth:bearer {
+  token: {{master-realm-token}}
+}
+
+body:json {
+  {
+      "attributes": {
+          "oauth2.device.authorization.grant.enabled": "true"
+      }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

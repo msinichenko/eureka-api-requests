@@ -1,0 +1,102 @@
+meta {
+  name: Get appications
+  type: http
+  seq: 16
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/applications?limit=300
+  body: none
+  auth: inherit
+}
+
+params:query {
+  limit: 300
+  ~query: name={{realm}}
+  ~query: id=app-platform-complete-2.1.5
+}
+
+headers {
+  ~x-okapi-token: {{master-realm-token}}
+}
+
+script:pre-request {
+  // const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  ### GET /applications
+  
+  This endpoint retrieves a list of applications with an optional limit parameter to specify the maximum number of records to return.
+  
+  #### Request Parameters
+  
+  - `limit` (query parameter, optional): Specifies the maximum number of records to return.
+      
+  
+  #### Response
+  
+  Upon a successful execution, the server responds with a status code of 200 and a JSON object containing an array of `applicationDescriptors` and the `totalRecords` field. Each `applicationDescriptor` object includes:
+  
+  - `description`: The description of the application.
+      
+  - `modules`: An array of objects, each containing the `id`, `name`, and `version` of a module.
+      
+  - `uiModules`: An array of objects, each containing the `id`, `name`, and `version` of a UI module.
+      
+  - `platform`: The platform of the application.
+      
+  - `dependencies`: An array of objects, each containing the `name` and `version` of a dependency.
+      
+  - `id`: The unique identifier of the application.
+      
+  - `name`: The name of the application.
+      
+  - `version`: The version of the application.
+      
+  
+  If there are no records, the `totalRecords` field will be 0.
+  
+  #### Example
+  
+  ``` json
+  {
+      "applicationDescriptors": [
+          {
+              "description": "",
+              "modules": [
+                  {
+                      "id": "",
+                      "name": "",
+                      "version": ""
+                  }
+              ],
+              "uiModules": [
+                  {
+                      "id": "",
+                      "name": "",
+                      "version": ""
+                  }
+              ],
+              "platform": "",
+              "dependencies": [
+                  {
+                      "name": "",
+                      "version": ""
+                  }
+              ],
+              "id": "",
+              "name": "",
+              "version": ""
+          }
+      ],
+      "totalRecords": 0
+  }
+  
+   ```
+}

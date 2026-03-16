@@ -1,0 +1,44 @@
+meta {
+  name: Keycloak create users
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://keycloak-{{folio}}.int.aws.folio.org/admin/realms/master/users
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{master-realm-token}}
+}
+
+body:json {
+  {
+    "username": "test123",
+    "realmRoles": [
+      "5ee5b5b1-5b90-4135-b329-db0280cd9f5f"
+    ],
+    "credentials": [
+      {
+        "temporary": false,
+        "type": "password",
+        "value": ""
+      }
+    ],
+    "access": {
+      "manageGroupMembership": true,
+      "view": true,
+      "mapRoles": true,
+      "impersonate": true,
+      "manage": true
+    },
+    "enabled": true
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

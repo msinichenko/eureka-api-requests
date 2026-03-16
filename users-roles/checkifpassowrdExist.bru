@@ -1,0 +1,28 @@
+meta {
+  name: checkifpassowrdExist
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/authn/credentials-existence?userId=6a1432d8-8330-4867-9ff3-cb099a6a48cd
+  body: none
+  auth: none
+}
+
+params:query {
+  userId: 6a1432d8-8330-4867-9ff3-cb099a6a48cd
+  ~query: username == mod-entities-links
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}settings {
+  encodeUrl: true
+  timeout: 0
+}

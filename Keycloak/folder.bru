@@ -1,0 +1,11 @@
+meta {
+  name: Keycloak
+}
+
+auth {
+  mode: inherit
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+}

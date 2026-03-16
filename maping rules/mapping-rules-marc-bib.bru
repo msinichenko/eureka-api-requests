@@ -1,0 +1,121 @@
+meta {
+  name: mapping-rules/marc-bib
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/mapping-rules/marc-bib
+  body: none
+  auth: inherit
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:post-response {
+  test("Response status code is 200", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+  
+  
+  // // pm.test("Response time is less than 200ms", function () {
+  // //     pm.expect(pm.response.responseTime).to.be.below(200);
+  // });
+  
+  
+  // // pm.test("Response matches the expected JSON schema", function () {
+  // //     const responseData = pm.response.json();
+      
+  // //     pm.expect(responseData).to.be.an('object');
+  
+  //     // Check for the existence of keys that should be arrays
+  //     const keys = [
+  //         "100", "110", "111", "130", "240", "245", "246", "247", "250", "255", 
+  //         "260", "264", "300", "310", "321", "336", "338", "362", "500", 
+  //         "501", "502", "504", "505", "506", "507", "508", "510", "511", 
+  //         "513", "514", "515", "516", "518", "520", "521", "522", "524", 
+  //         "525", "526", "530", "532", "533", "534", "535", "536", "538", 
+  //         "540", "541", "542", "544", "545", "546", "547", "550", "552", 
+  //         "555", "556", "561", "562", "563", "565", "567", "580", "581", 
+  //         "583", "584", "585", "586", "588", "590", "600", "610", "611", 
+  //         "630", "647", "648", "650", "651", "653", "654", "655", "656", 
+  //         "657", "658", "662", "688", "700", "710", "711", "720", "780", 
+  //         "785", "800", "810", "811", "830", "856", "880", "001", "008", 
+  //         "010", "019", "020", "022", "024", "028", "035", "041", "050", 
+  //         "060", "074", "080", "082", "086", "090", "LDR"
+  //     ];
+  
+  //     keys.forEach(key => {
+  // //         pm.expect(responseData).to.have.property(key).that.is.an('array');
+  //     });
+  // });
+  
+  
+  const responseData = res.getBody();
+  
+  test("Each entity must have the required fields: target, subfield, and description", function () {
+      Object.keys(responseData).forEach(key => {
+          responseData[key].forEach(item => {
+              if (item.entity) {
+                  item.entity.forEach(entity => {
+                      expect(entity).to.have.property('target').that.is.a('string');
+                      expect(entity).to.have.property('subfield').that.is.an('array');
+                      expect(entity).to.have.property('description').that.is.a('string');
+                  });
+              }
+              if (item.rules) {
+                  item.rules.forEach(rule => {
+                      expect(rule).to.have.property('conditions').that.is.an('array');
+                  });
+              }
+          });
+      });
+  });
+  
+  
+  // // pm.test("Validate that rules and conditions are in the expected format", function () {
+  // //     const responseData = pm.response.json();
+      
+  //     // Check for the existence of keys with their respective structure
+  //     Object.keys(responseData).forEach(key => {
+  //         const items = responseData[key];
+  //         items.forEach(item => {
+  //             if (item.entity) {
+  //                 item.entity.forEach(entity => {
+  // //                     pm.expect(entity).to.have.all.keys('target', 'subfield', 'description', 'applyRulesOnConcatenatedData');
+  //                     if (entity.rules) {
+  // //                         pm.expect(entity.rules).to.be.an('array');
+  //                         entity.rules.forEach(rule => {
+  // //                             pm.expect(rule).to.have.all.keys('conditions', 'target', 'subfield', 'description', 'applyRulesOnConcatenatedData');
+  //                             if (rule.conditions) {
+  // //                                 pm.expect(rule.conditions).to.be.an('array');
+  //                                 rule.conditions.forEach(condition => {
+  // //                                     pm.expect(condition).to.have.all.keys('type', 'parameter');
+  //                                 });
+  //                             }
+  //                         });
+  //                     }
+  //                 });
+  //             }
+  //         });
+  //     });
+  // });
+  test("Response contains the key 'LDR' with an array as its value", function () {
+      const responseData = res.getBody();
+      expect(responseData).to.have.property('LDR').that.is.an('array');
+  });
+  test("LDR contains specific data", function () {
+      const responseData = res.getBody();
+      
+     expect(responseData.LDR.length).to.be.greaterThan(0); // Replace 'expectedValue' with the actual value you want to check.
+  });
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

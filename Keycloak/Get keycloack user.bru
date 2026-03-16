@@ -1,0 +1,24 @@
+meta {
+  name: Get keycloack user
+  type: http
+  seq: 4
+}
+
+get {
+  url: https://keycloak-{{folio}}.int.aws.folio.org/admin/realms/{{realm}}/users
+  body: text
+  auth: bearer
+}
+
+headers {
+  ~Content-Type: application/x-www-form-urlencoded
+}
+
+auth:bearer {
+  token: {{master-realm-token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

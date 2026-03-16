@@ -1,0 +1,29 @@
+meta {
+  name: Post consortia
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/consortia/93b7e8a8-9c92-4e82-aa15-f3c4c24059a2/tenants?adminUserId=9e849290-2657-4d4a-a193-3e1c45a75c4d
+  body: json
+  auth: inherit
+}
+
+params:query {
+  adminUserId: 9e849290-2657-4d4a-a193-3e1c45a75c4d
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: mstestcentral
+}
+
+body:json {
+  {"id":"mstestinst1", "name":"mstestinst1", "code":"MTO", "isCentral":false}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

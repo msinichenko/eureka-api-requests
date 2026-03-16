@@ -1,0 +1,29 @@
+meta {
+  name: Check mark migraition
+  type: http
+  seq: 11
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/marc-migrations/:migrationId
+  body: none
+  auth: none
+}
+
+params:path {
+  migrationId: 77bca4fe-14d5-42ea-b38d-5ff248e9e932
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  ~x-okapi-token: {{folio-user-token}}
+}
+
+script:pre-request {
+  // const res = await bru.runRequest("auth/get-user-login-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

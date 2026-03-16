@@ -1,0 +1,36 @@
+meta {
+  name: Get application by name
+  type: http
+  seq: 23
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/applications/:app_id
+  body: json
+  auth: inherit
+}
+
+params:query {
+  ~full: true
+  ~limit: 300
+}
+
+params:path {
+  app_id: app-platform-complete-3.1.0-SNAPSHOT.1439
+}
+
+headers {
+  ~x-okapi-token: {{master-realm-token}}
+}
+
+body:json {
+  {
+    "tenantId" : "42571ecf-d955-42b5-b708-daec67cbe652",
+    "applications" : ["app-platform-minimal-0.0.6"]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

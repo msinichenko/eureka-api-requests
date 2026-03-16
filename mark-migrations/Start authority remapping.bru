@@ -1,0 +1,33 @@
+meta {
+  name: Start authority remapping
+  type: http
+  seq: 3
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/marc-migrations
+  body: json
+  auth: none
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  ~x-okapi-token: {{okapi-token}}
+  ~x-okapi-token: {{folio-user-token}}
+}
+
+body:json {
+  {
+      "entityType": "authority",
+      "operationType": "remapping"
+  }
+}
+
+script:pre-request {
+  // const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

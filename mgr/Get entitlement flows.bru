@@ -1,0 +1,28 @@
+meta {
+  name: Get entitlement flows
+  type: http
+  seq: 15
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/entitlement-flows?limit=500
+  body: none
+  auth: inherit
+}
+
+params:query {
+  limit: 500
+}
+
+headers {
+  ~x-okapi-token: {{master-realm-token}}
+}
+
+script:pre-request {
+  // const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

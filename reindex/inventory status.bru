@@ -1,0 +1,25 @@
+meta {
+  name: inventory status
+  type: http
+  seq: 4
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/authority-storage/reindex/:jobId
+  body: none
+  auth: none
+}
+
+params:path {
+  jobId: f3d0c500-c6fe-4daa-ad9f-8791c3816107
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

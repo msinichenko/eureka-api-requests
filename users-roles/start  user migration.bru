@@ -1,0 +1,23 @@
+meta {
+  name: start  user migration
+  type: http
+  seq: 16
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/users-keycloak/migrations
+  body: json
+  auth: none
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}settings {
+  encodeUrl: true
+  timeout: 0
+}

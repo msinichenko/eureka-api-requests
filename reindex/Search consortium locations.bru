@@ -1,0 +1,21 @@
+meta {
+  name: Search consortium locations
+  type: http
+  seq: 5
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/search/consortium/locations
+  body: none
+  auth: none
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  x-okapi-token: {{okapi-token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

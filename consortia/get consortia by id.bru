@@ -1,0 +1,31 @@
+meta {
+  name: get consortia by id
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/consortia/:cosortia_id
+  body: none
+  auth: none
+}
+
+params:query {
+  ~query: username =testuser11
+  ~limit: 100
+  ~: 
+}
+
+params:path {
+  cosortia_id: 1f06c60e-4431-432d-97a4-ca2bc6b152cb
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

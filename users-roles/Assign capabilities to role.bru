@@ -1,0 +1,38 @@
+meta {
+  name: Assign capabilities to role
+  type: http
+  seq: 22
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/roles/capabilities
+  body: json
+  auth: none
+}
+
+params:query {
+  ~: 
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+    "roleId": "f61c73b0-fe36-467b-92b7-8f01591ff3d7",
+    "capabilityIds": [
+      "560cf2fc-12ee-487a-983a-97b5739841b2",
+      "26f23da0-4a8d-44b2-87ca-1df6d0b6eb5b"
+      
+    ]
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,58 @@
+meta {
+  name: user-login-token
+  type: http
+  seq: 3
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/authn/login-with-expiry
+  body: json
+  auth: none
+}
+
+params:query {
+  ~query: username =testuser11
+  ~limit: 100
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+      "username": "{{tenant_username}}",
+      "password": "{{tenant_password}}"
+  }
+}
+
+script:post-response {
+  // Get Set-Cookie header
+  const setCookie = res.headers["set-cookie"];
+  
+  if (setCookie) {
+    // If multiple cookies returned, normalize to array
+    const cookies = Array.isArray(setCookie) ? setCookie : [setCookie];
+  
+    // Find folioAccessToken cookie
+    const accessTokenCookie = cookies.find(c => c.startsWith("folioAccessToken="));
+  
+    if (accessTokenCookie) {
+      const token = accessTokenCookie.split(";")[0].split("=")[1];
+  
+      // Save to env variable
+      bru.setGlobalEnvVar("folio-user-token", token, { persist: true });
+  
+      console.log("folio-user-token saved");
+    } else {
+      console.warn("folioAccessToken cookie not found in Set-Cookie header");
+    }
+  } else {
+    console.warn("Set-Cookie header not present");
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

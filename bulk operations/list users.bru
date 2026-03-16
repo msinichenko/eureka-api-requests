@@ -1,0 +1,29 @@
+meta {
+  name: list users
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/bulk-operations/list-users?query=%28cql.allRecords%3D1%29+sortby+endTime%2Fsort.descending
+  body: none
+  auth: inherit
+}
+
+params:query {
+  query: %28cql.allRecords%3D1%29+sortby+endTime%2Fsort.descending
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:post-response {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,25 @@
+meta {
+  name: GET templates
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/reading-room/access-log
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~query: readingRoomName=Reading 1
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

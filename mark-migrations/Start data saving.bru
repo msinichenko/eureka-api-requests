@@ -1,0 +1,37 @@
+meta {
+  name: Start data saving
+  type: http
+  seq: 10
+}
+
+put {
+  url: https://kong-{{folio}}.{{domain}}/marc-migrations/:migrationId
+  body: json
+  auth: none
+}
+
+params:path {
+  migrationId: fa887377-1bbd-42e2-b2b4-e373d9f94b18
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  ~x-okapi-token: {{okapi-token}}
+  ~x-okapi-token: {{folio-user-token}}
+}
+
+body:json {
+  {
+      "status": "data_saving",
+      "publishEvents": "true"
+  }
+}
+
+script:pre-request {
+  // const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

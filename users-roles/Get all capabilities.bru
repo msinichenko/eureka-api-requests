@@ -1,0 +1,29 @@
+meta {
+  name: Get all capabilities
+  type: http
+  seq: 9
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/capabilities?limit=5000
+  body: none
+  auth: none
+}
+
+params:query {
+  limit: 5000
+  ~query: applicationId==app-platform-complete-1.0.16 or applicationId==app-platform-minimal-1.0.5 or applicationId==app-erm-usage-1.0.1 or applicationId==app-consortia-1.0.0 or applicationId==app-dcb-1.0.3
+  ~query: applicationId==app-linked-data-1.1.6
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}settings {
+  encodeUrl: true
+  timeout: 0
+}

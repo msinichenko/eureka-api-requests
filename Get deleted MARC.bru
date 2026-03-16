@@ -1,0 +1,49 @@
+meta {
+  name: Get deleted MARC
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/authority-storage/authorities?idOnly=true&deleted=true
+  body: none
+  auth: inherit
+}
+
+params:query {
+  idOnly: true
+  deleted: true
+  ~query: name={{realm}}
+  ~full: true
+}
+
+headers {
+  x-okapi-tenant: {{tenant_id}}
+  ~x-okapi-token: 
+}
+
+script:pre-request {
+  var keycloakUrl = `https://keycloak-${bru.getEnvVar('folio')}.${bru.getEnvVar('domain')}/realms/${bru.getEnvVar('realm')}/protocol/openid-connect/token`;
+  
+  
+  // pm.sendRequest({
+      url: keycloakUrl,
+      method: 'POST',
+      header: {
+          'content-type': 'application/x-www-form-urlencoded'
+      },
+      body: {
+          mode: 'urlencoded',
+          urlencoded: [
+              {key: 'grant_type', value: 'client_credentials'},
+              {key: 'client_id', value: 'folio-backend-admin-client'},
+              {key: 'client_secret', value: bru.getEnvVar('admin_client_secret')}
+          ]
+      }
+  }, (err, res) => bru.setEnvVar("okapi-token", res.json().access_token));
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

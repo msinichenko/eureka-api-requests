@@ -1,0 +1,36 @@
+meta {
+  name: Get custom fields
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/users?limit=1000&query=username==Edge
+  body: none
+  auth: none
+}
+
+params:query {
+  limit: 1000
+  query: username==Edge
+  ~query: username=ecs_admin
+  ~query: username=ecs_0011_admin
+  ~query: username=fs09000000
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}script:post-response {
+  const jsonData = res.getBody();
+  bru.setEnvVar("user_id", jsonData.users[0].id);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

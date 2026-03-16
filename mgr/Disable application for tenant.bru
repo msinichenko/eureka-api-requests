@@ -1,0 +1,35 @@
+meta {
+  name: Disable application for tenant
+  type: http
+  seq: 13
+}
+
+delete {
+  url: https://kong-{{folio}}.{{domain}}/entitlements?async=true
+  body: json
+  auth: inherit
+}
+
+params:query {
+  async: true
+}
+
+headers {
+  x-okapi-token: {{master-realm-token}}
+}
+
+body:json {
+  {
+      "tenantId": "7d85d885-04d4-400e-b5a1-0601c1132452",
+      "applications": ["app-platform-complete-0.0.8"]
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

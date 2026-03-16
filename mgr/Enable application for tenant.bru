@@ -1,0 +1,38 @@
+meta {
+  name: Enable application for tenant
+  type: http
+  seq: 12
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/entitlements?async=true&purgeOnRollback=false&ignoreErrors=false
+  body: json
+  auth: inherit
+}
+
+params:query {
+  async: true
+  purgeOnRollback: false
+  ignoreErrors: false
+  ~tenantParameters: loadReference%3Dfalse%2CloadSample%3Dfalse%2CcentralTenantId%3Dcs00000int
+}
+
+headers {
+  x-okapi-token: {{master-realm-token}}
+}
+
+body:json {
+  {
+      "tenantId": "1e8c2d66-4907-4b1e-822d-883abe0117f1",
+      "applications": ["app-acquisitions-1.0.18","app-bulk-edit-1.0.5","app-consortia-1.2.1","app-dcb-1.1.0","app-edge-complete-2.0.4","app-erm-usage-2.0.3","app-fqm-1.0.7","app-marc-migrations-2.0.1","app-oai-pmh-1.0.1","app-platform-complete-2.1.27","app-platform-minimal-2.0.14","app-inn-reach-1.0.0","app-linked-data-1.1.6","app-requests-mediated-ui-1.1.2","app-requests-mediated-2.0.0","app-requests-ecs-1.1.0"]
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

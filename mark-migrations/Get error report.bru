@@ -1,0 +1,42 @@
+meta {
+  name: Get error report
+  type: http
+  seq: 9
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/marc-migrations/:job_id/error-report/errors?offset=0&limit=100
+  body: json
+  auth: none
+}
+
+params:query {
+  offset: 0
+  limit: 100
+}
+
+params:path {
+  job_id: cf2abf6b-c79c-4913-9eb9-107d6f3599f4
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  ~x-okapi-token: {{folio-user-token}}
+  ~x-okapi-token: {{okapi-token}}
+}
+
+body:json {
+  {
+      "entityType": "authority",
+      "operationType": "remapping"
+  }
+}
+
+script:pre-request {
+  // const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

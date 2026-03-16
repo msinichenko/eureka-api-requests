@@ -1,0 +1,37 @@
+meta {
+  name: Register module discovery
+  type: http
+  seq: 34
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/modules/:moduleId/discovery
+  body: json
+  auth: none
+}
+
+params:path {
+  moduleId: mod-calendar-3.3.1
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+}
+
+body:json {
+  {
+        "location": "http://mod-calendar-b.sebf.folio-eis.us-west-2:8051/mod-calendar",
+        "id": "mod-calendar-3.3.1",
+        "name": "mod-calendar",
+        "version": "3.3.1"
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

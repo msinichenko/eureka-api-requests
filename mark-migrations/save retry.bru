@@ -1,0 +1,36 @@
+meta {
+  name: save retry
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/marc-migrations/:job_id/save/retry
+  body: json
+  auth: none
+}
+
+params:path {
+  job_id: bb9e4760-7a2c-4954-ac5f-968bb9e539e6
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  ~x-okapi-token: {{folio-user-token}}
+}
+
+body:json {
+  [
+  
+  "986307bc-edb8-4385-8d8d-eb7ea6594a16"
+  ]
+}
+
+script:pre-request {
+  // const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

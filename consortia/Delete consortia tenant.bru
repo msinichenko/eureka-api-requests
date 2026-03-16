@@ -1,0 +1,41 @@
+meta {
+  name: Delete consortia tenant
+  type: http
+  seq: 9
+}
+
+delete {
+  url: https://kong-{{folio}}.{{domain}}/consortia/:consortia_id/tenants/:tenant_id
+  body: json
+  auth: none
+}
+
+params:query {
+  ~query: username =testuser11
+  ~limit: 100
+}
+
+params:path {
+  consortia_id: 13e5541d-406b-4e6d-8574-2a80a82df2f1
+  tenant_id: cs00000int_0077
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+    "deleteType": "HARD",
+    "deleteOptions": {
+      "deleteUsersUserTenants": true,
+      "deleteRelatedShadowUsers": true
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

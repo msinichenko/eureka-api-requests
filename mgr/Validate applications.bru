@@ -1,0 +1,36 @@
+meta {
+  name: Validate applications
+  type: http
+  seq: 22
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/applications/validate
+  body: json
+  auth: inherit
+}
+
+params:query {
+  ~full: true
+  ~limit: 500
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+}
+
+body:json {
+  {
+      "tenantId": "499fd5cb-e4bc-426e-a244-d80dc6a0cf7e",
+      "applications": ["app-platform-minimal-0.0.8"]
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

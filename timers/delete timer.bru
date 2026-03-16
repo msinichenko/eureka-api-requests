@@ -1,0 +1,30 @@
+meta {
+  name: delete timer
+  type: http
+  seq: 2
+}
+
+delete {
+  url: https://kong-{{folio}}.{{domain}}/scheduler/timers/:timer_id
+  body: none
+  auth: none
+}
+
+params:query {
+  ~query: enabled==false
+  ~id: 
+}
+
+params:path {
+  timer_id: 
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  x-okapi-token: {{okapi-token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

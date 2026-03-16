@@ -1,0 +1,21 @@
+meta {
+  name: Get entitlements
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/entitlements?limit=500
+  body: none
+  auth: inherit
+}
+
+params:query {
+  limit: 500
+  ~query: tenantId==b1f63200-03c4-419c-8c42-56aca1f96ef4
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

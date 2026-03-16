@@ -1,0 +1,40 @@
+meta {
+  name: Get consortia tenants
+  type: http
+  seq: 8
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/consortia/:cosortia_id/tenants?limit=10000
+  body: json
+  auth: none
+}
+
+params:query {
+  limit: 10000
+  ~query: username =testuser11
+  ~limit: 100
+}
+
+params:path {
+  cosortia_id: 1f06c60e-4431-432d-97a4-ca2bc6b152cb
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+      "id": "mstestinst1",
+      "name": "mstestinst1",
+      "code": "MTO",
+      "isCentral": false
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

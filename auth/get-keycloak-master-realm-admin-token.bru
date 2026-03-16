@@ -1,0 +1,37 @@
+meta {
+  name: get-keycloak-master-realm-admin-token
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://keycloak-{{folio}}.{{domain}}/realms/master/protocol/openid-connect/token
+  body: formUrlEncoded
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/x-www-form-urlencoded
+}
+
+body:form-urlencoded {
+  grant_type: password
+  username: {{keycloak_username}}
+  password: {{keycloak_password}}
+  client_id: admin-cli
+}
+
+script:post-response {
+  // // bru.setEnvVar("okapi-token", res.getBody().access_token, { persist: true });
+  // body = bru.res.body();
+  
+  // store token in env variable
+  bru.setGlobalEnvVar("master-realm-token", res.body.access_token,{ persist: true });
+  
+  console.log("master-realm-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

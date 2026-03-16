@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "eureka-requests",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

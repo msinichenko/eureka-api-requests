@@ -1,0 +1,33 @@
+meta {
+  name: Get user capabilities
+  type: http
+  seq: 14
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/users/capabilities?query=userId=1fa6b015-594d-409e-969f-0b124b1de8f4
+  body: json
+  auth: none
+}
+
+params:query {
+  query: userId=1fa6b015-594d-409e-969f-0b124b1de8f4
+  ~limit: 100
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}script:post-response {
+  // // const jsonData = pm.response.json();
+  // // pm.environment.set("role_id", jsonData.roles[0].id);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

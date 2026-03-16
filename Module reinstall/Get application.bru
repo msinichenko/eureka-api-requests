@@ -1,0 +1,19 @@
+meta {
+  name: Get application
+  type: http
+  seq: 4
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/applications/:app_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  app_id: app-platform-complete-2.2.12
+}
+
+settings {
+  encodeUrl: true
+}

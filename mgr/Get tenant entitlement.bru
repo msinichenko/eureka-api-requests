@@ -1,0 +1,59 @@
+meta {
+  name: Get tenant entitlement
+  type: http
+  seq: 21
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/entitlements?limit=500
+  body: json
+  auth: inherit
+}
+
+params:query {
+  limit: 500
+  ~query: tenantId=={{tenant_id}}
+  ~query: tenantId=5c1cd503-1ab5-4f42-8d30-966a731e13fc
+}
+
+headers {
+  ~x-okapi-token: {{okapi-token}}
+}
+
+script:pre-request {
+  var keycloakUrl = `https://keycloak-${bru.getEnvVar('folio')}.${bru.getEnvVar('domain')}/realms/${bru.getEnvVar('realm')}/protocol/openid-connect/token`;
+  
+  
+  // pm.sendRequest({
+      url: keycloakUrl,
+      method: 'POST',
+      header: {
+          'content-type': 'application/x-www-form-urlencoded'
+      },
+      body: {
+          mode: 'urlencoded',
+          urlencoded: [
+              {key: 'grant_type', value: 'client_credentials'},
+              {key: 'client_id', value: 'folio-backend-admin-client'},
+              {key: 'client_secret', value: bru.getEnvVar('admin_client_secret')}
+          ]
+      }
+  }, (err, res) => bru.setEnvVar("okapi-token", res.json().access_token));
+  
+  // // kong url
+  // var kongUrl = `https://kong-${bru.getEnvVar('folio')}.${bru.getEnvVar('domain')}/tenants?query=name=${bru.getEnvVar('realm')}`;
+  // // pm.sendRequest({
+  //     url: kongUrl,
+  //     method: 'GET',
+  //     header: {
+  //         'content-type': 'application/x-www-form-urlencoded'
+  //     },
+  //     body: {
+  //         mode: 'none',
+  //     }
+  // }, (err, res) => bru.setEnvVar("tenant_id", res.json().tenants[0].id));
+}
+
+settings {
+  encodeUrl: true
+}

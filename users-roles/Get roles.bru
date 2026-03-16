@@ -1,0 +1,37 @@
+meta {
+  name: Get roles
+  type: http
+  seq: 13
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/roles?limit=1000&query=name=AdminRole
+  body: json
+  auth: none
+}
+
+params:query {
+  limit: 1000
+  query: name=AdminRole
+  ~query: name=LocateRole
+  ~query: description=System generated role during migration
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
+
+script:post-response {
+  // // const jsonData = pm.response.json();
+  // // pm.environment.set("role_id", jsonData.roles[0].id);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

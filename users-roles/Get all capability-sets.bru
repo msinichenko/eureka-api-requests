@@ -1,0 +1,35 @@
+meta {
+  name: Get all capability-sets
+  type: http
+  seq: 8
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/capability-sets?query=resource==Notes All Operations&limit=100
+  body: json
+  auth: none
+}
+
+params:query {
+  query: resource==Notes All Operations
+  limit: 100
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+      "username": "testuser1",
+      "password": "secure_password"
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,39 @@
+meta {
+  name: Module reinstall
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/reinstall/modules
+  body: json
+  auth: inherit
+}
+
+params:query {
+  ~tenantParameters: loadReference=true,loadSample=false
+}
+
+headers {
+  x-okapi-token: {{master-realm-token}}
+  ~x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+    "tenantId": "{{realm}}",
+    "applicationId": "app-platform-complete-2.2.7",
+    "modules": [
+      "mod-serials-management-2.0.3"
+    ]
+  }
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

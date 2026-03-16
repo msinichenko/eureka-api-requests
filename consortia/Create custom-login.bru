@@ -1,0 +1,32 @@
+meta {
+  name: Create custom-login
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/consortia/:consortiaID/tenants/:central_tenantId/custom-login
+  body: none
+  auth: none
+}
+
+params:query {
+  ~query: username =testuser11
+  ~limit: 100
+  ~: 
+}
+
+params:path {
+  consortiaID: 1f06c60e-4431-432d-97a4-ca2bc6b152cb
+  central_tenantId: {{realm}}
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

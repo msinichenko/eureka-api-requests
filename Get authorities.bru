@@ -1,0 +1,47 @@
+meta {
+  name: Get authorities
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/authority-storage/authorities?deleted=true&limit=2000&query=id==81657059-ff4f-42da-a3c9-f02377959740
+  body: none
+  auth: none
+}
+
+params:query {
+  deleted: true
+  limit: 2000
+  query: id==81657059-ff4f-42da-a3c9-f02377959740
+}
+
+headers {
+  x-okapi-tenant: {{realm}}
+  ~x-okapi-tenant: {{realm}}
+  ~x-okapi-tokne: {{okapi-token}}
+}
+
+script:pre-request {
+  var kongUrl = `https://kong-${bru.getEnvVar('folio')}.${bru.getEnvVar('domain')}/authn/login-with-expiry`;
+  
+  const raw = JSON.stringify({
+    "username": bru.getEnvVar('tenant_username'),
+    "password": bru.getEnvVar('tenant_password')
+  });
+  
+  // pm.sendRequest({
+      url: kongUrl,
+      method: 'POST',
+      header: {
+          'content-type': 'application/json',
+          'x-okapi-tenant': `${bru.getEnvVar('realm')}`
+      },
+      body: raw
+  }, (err, res) => console.log(res)); //=> bru.setEnvVar("okapi-token", res.json().access_token));
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

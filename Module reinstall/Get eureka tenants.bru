@@ -1,0 +1,60 @@
+meta {
+  name: Get eureka tenants
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/tenants?limit=100
+  body: none
+  auth: inherit
+}
+
+params:query {
+  limit: 100
+  ~query: name=={{realm}}
+}
+
+headers {
+  ~: 
+}
+
+script:post-response {
+  test("Status code is 200", function () {
+      expect(res.getStatus()).to.equal(200);
+  });
+  
+  // Parse the JSON response
+  const jsonData = res.getBody();
+  
+  // Check that the body has a tenants array with at least one element
+  test("Response has tenants array with at least one element", function () {
+      expect(jsonData).to.have.property("tenants");
+      expect(jsonData.tenants).to.be.an("array");
+      expect(jsonData.tenants.length).to.be.at.least(1);
+  });
+  
+  // Check that the first element has an id field of type string
+  test("First tenant has id field of type string", function () {
+      expect(jsonData.tenants[0]).to.have.property("id");
+      expect(jsonData.tenants[0].id).to.be.a("string");
+  });
+  
+  // Only set the environment variable if all checks pass
+  if (jsonData.tenants && 
+      Array.isArray(jsonData.tenants) && 
+      jsonData.tenants.length > 0 && 
+      jsonData.tenants[0].id && 
+      typeof jsonData.tenants[0].id === "string") {
+      
+      bru.setEnvVar("tenant_id", jsonData.tenants[0].id);
+      
+      test("tenant_id was stored successfully in environment", function () {
+          expect(bru.getEnvVar("tenant_id")).to.eql(jsonData.tenants[0].id);
+      });
+  }
+}
+
+settings {
+  encodeUrl: true
+}

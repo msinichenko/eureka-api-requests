@@ -1,0 +1,67 @@
+meta {
+  name: set primary affliation
+  type: http
+  seq: 10
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/consortia/:consortia_id/tenants/{{realm}}/create-primary-affiliations?centralTenantId=cs00000int
+  body: json
+  auth: inherit
+}
+
+params:query {
+  centralTenantId: cs00000int
+}
+
+params:path {
+  consortia_id: 
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+body:json {
+  {
+    "tenantId": "cs00000int_0011",
+    "users": [
+      {
+        "id": "20975831-8147-4b4e-83d8-99b17c2859ca",
+        "username": "mod-consortia-keycloak"
+        //"email": "string",
+       // "mobilePhoneNumber": "string",
+        //"phoneNumber": "string",
+        //"externalSystemId": "string",
+        //"barcode": "string"
+      }
+    ]
+  }
+}
+
+script:pre-request {
+  var keycloakUrl = `https://keycloak-${bru.getEnvVar('folio')}.${bru.getEnvVar('domain')}/realms/${bru.getEnvVar('realm')}/protocol/openid-connect/token`;
+  
+  
+  // pm.sendRequest({
+      url: keycloakUrl,
+      method: 'POST',
+      header: {
+          'content-type': 'application/x-www-form-urlencoded'
+      },
+      body: {
+          mode: 'urlencoded',
+          urlencoded: [
+              {key: 'grant_type', value: 'client_credentials'},
+              {key: 'client_id', value: bru.getEnvVar('tenant_client')},
+              {key: 'client_secret', value: bru.getEnvVar('tenant_client_secret')}
+          ]
+      }
+  }, (err, res) => bru.setEnvVar("okapi-token", res.json().access_token));
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
