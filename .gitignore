@@ -1,0 +1,18 @@
+# Bruno environments contain credentials - never commit real environments
+environments/
+
+# Allow the example/template environment so new team members have a reference
+!environments/example.bru
+
+# Bruno global environment file (written to disk by setGlobalEnvVar with persist:true)
+# Stored in ~/.bruno/ but guard against any local copies
+*.globals.bru
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Editor artifacts
+.vscode/
+*.swp
+*~
