@@ -12,7 +12,6 @@ Bruno collection for FOLIO/Eureka operational and migration requests — Keycloa
 
 1. Clone this repo and open the folder in Bruno (**Open Collection**).
 2. Create a new environment: **Environments → Create Environment** (e.g. `dev`, `int`, `perf`).
-   - Copy variable names from `environments/example.bru` and fill in real values.
    - **Never commit an environment file with real credentials** — `environments/` is git-ignored.
 3. Select your environment from the top-right dropdown.
 4. Run auth requests in order:
@@ -22,8 +21,6 @@ Bruno collection for FOLIO/Eureka operational and migration requests — Keycloa
 5. Run the target request(s) from the relevant folder.
 
 ## Environment Variables
-
-Create these in your Bruno environment. See `environments/example.bru` for a template.
 
 ### Input variables (set manually)
 
