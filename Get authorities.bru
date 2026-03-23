@@ -23,22 +23,7 @@ headers {
 }
 
 script:pre-request {
-  var kongUrl = `https://kong-${bru.getEnvVar('folio')}.${bru.getEnvVar('domain')}/authn/login-with-expiry`;
-  
-  const raw = JSON.stringify({
-    "username": bru.getEnvVar('tenant_username'),
-    "password": bru.getEnvVar('tenant_password')
-  });
-  
-  // pm.sendRequest({
-      url: kongUrl,
-      method: 'POST',
-      header: {
-          'content-type': 'application/json',
-          'x-okapi-tenant': `${bru.getEnvVar('realm')}`
-      },
-      body: raw
-  }, (err, res) => console.log(res)); //=> bru.setEnvVar("okapi-token", res.json().access_token));
+  const res = await bru.runRequest("auth/user-login-token");
 }
 
 settings {

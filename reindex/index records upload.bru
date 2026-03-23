@@ -21,27 +21,6 @@ body:json {
   }
 }
 
-script:pre-request {
-  var keycloakUrl = `https://keycloak-${bru.getEnvVar('folio')}.${bru.getEnvVar('domain')}/realms/${bru.getEnvVar('realm')}/protocol/openid-connect/token`;
-  
-  
-  // pm.sendRequest({
-      url: keycloakUrl,
-      method: 'POST',
-      header: {
-          'content-type': 'application/x-www-form-urlencoded'
-      },
-      body: {
-          mode: 'urlencoded',
-          urlencoded: [
-              {key: 'grant_type', value: 'client_credentials'},
-              {key: 'client_id', value: bru.getEnvVar('tenant_client')},
-              {key: 'client_secret', value: bru.getEnvVar('tenant_client_secret')}
-          ]
-      }
-  }, (err, res) => bru.setEnvVar("okapi-token", res.json().access_token));
-}
-
 settings {
   encodeUrl: true
   timeout: 0
