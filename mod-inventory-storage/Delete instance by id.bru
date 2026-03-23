@@ -1,10 +1,10 @@
 meta {
-  name: Get authorities by id
+  name: Delete instance by id
   type: http
-  seq: 1
+  seq: 2
 }
 
-get {
+delete {
   url: https://kong-{{folio}}.{{domain}}/instance-storage/instances/:id
   body: none
   auth: none

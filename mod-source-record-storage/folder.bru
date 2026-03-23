@@ -1,0 +1,12 @@
+meta {
+  name: mod-source-record-storage
+  seq: 21
+}
+
+auth {
+  mode: inherit
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}
