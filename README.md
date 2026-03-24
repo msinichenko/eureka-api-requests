@@ -1,4 +1,4 @@
-# fse-eureka-requests
+# eureka-api-requests
 
 Bruno collection for FOLIO/Eureka operational and migration requests — Keycloak, consortia, MGR, reindex, users/roles, MARC migrations, and related modules.
 
