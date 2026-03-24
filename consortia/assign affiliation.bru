@@ -5,17 +5,17 @@ meta {
 }
 
 post {
-  url: https://kong-{{folio}}.{{domain}}/consortia/:consortia_id/tenants/{{realm}}/create-primary-affiliations?centralTenantId=cs00000int
+  url: https://kong-{{folio}}.{{domain}}/consortia/:consortia_id/tenants/{{realm}}/create-primary-affiliations?centralTenantId={{consortia_central_tenant_id}}
   body: json
   auth: inherit
 }
 
 params:query {
-  centralTenantId: cs00000int
+  centralTenantId: {{consortia_central_tenant_id}}
 }
 
 params:path {
-  consortia_id: 
+  consortia_id: {{consortia_id}}
 }
 
 headers {
