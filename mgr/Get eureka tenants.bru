@@ -47,10 +47,10 @@ script:post-response {
       jsonData.tenants[0].id && 
       typeof jsonData.tenants[0].id === "string") {
       
-      bru.setEnvVar("tenant_id", jsonData.tenants[0].id);
+      bru.setGlobalEnvVar("tenant_id", jsonData.tenants[0].id);
       
       test("tenant_id was stored successfully in environment", function () {
-          expect(bru.getEnvVar("tenant_id")).to.eql(jsonData.tenants[0].id);
+          expect(bru.getGlobalEnvVar("tenant_id")).to.eql(jsonData.tenants[0].id);
       });
   }
 }
