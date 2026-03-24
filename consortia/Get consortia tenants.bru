@@ -17,12 +17,26 @@ params:query {
 }
 
 params:path {
-  cosortia_id: 1f06c60e-4431-432d-97a4-ca2bc6b152cb
+  cosortia_id: {{consortia_id}}
 }
 
 headers {
   x-okapi-token: {{okapi-token}}
   x-okapi-tenant: {{realm}}
+}
+
+script:post-response {
+  const tenants = res.body?.tenants;
+  const centralTenant = Array.isArray(tenants)
+    ? tenants.find((tenant) => tenant?.isCentral === true)
+    : null;
+
+  if (centralTenant?.id) {
+    bru.setGlobalEnvVar("consortia_central_tenant_id", centralTenant.id, { persist: true });
+    console.log("consortia_central_tenant_id saved");
+  } else {
+    console.warn("Central tenant not found in response");
+  }
 }
 
 body:json {

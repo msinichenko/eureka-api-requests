@@ -1,8 +1,11 @@
 meta {
   name: mod-inventory-storage
-  seq: 19
 }
 
 auth {
   mode: inherit
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
 }

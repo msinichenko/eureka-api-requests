@@ -24,7 +24,7 @@ headers {
 script:post-response {
   const consortia = res.body?.consortia;
   const consortiaId = Array.isArray(consortia) && consortia.length > 0 ? consortia[0].id : null;
-
+  
   if (consortiaId) {
     bru.setGlobalEnvVar("consortia_id", consortiaId, { persist: true });
     console.log("consortia_id saved");

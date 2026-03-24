@@ -9,3 +9,8 @@ auth {
 script:pre-request {
   const res = await bru.runRequest("auth/get-keycloak-tenant-token");
 }
+
+docs {
+  Execute ./consortia/get consortia request first to init consortia_id env variable
+  Works only for clusters with only one consortia
+}
