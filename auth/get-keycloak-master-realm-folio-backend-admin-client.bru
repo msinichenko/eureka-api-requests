@@ -1,0 +1,36 @@
+meta {
+  name: get-keycloak-master-realm-folio-backend-admin-client
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://keycloak-{{folio}}.{{domain}}/realms/master/protocol/openid-connect/token
+  body: formUrlEncoded
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/x-www-form-urlencoded
+}
+
+body:form-urlencoded {
+  grant_type: client_credentials
+  client_id: {{admin_client}}
+  client_secret: {{admin_client_secret}}
+}
+
+script:post-response {
+  // // bru.setEnvVar("okapi-token", res.getBody().access_token, { persist: true });
+  // body = bru.res.body();
+  
+  // store token in env variable
+  bru.setGlobalEnvVar("folio-backend-admin-client-token", res.body.access_token,{ persist: true });
+  
+  console.log("folio-backend-admin-client-token");
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,7 +1,7 @@
 meta {
   name: Register application
   type: http
-  seq: 28
+  seq: 20
 }
 
 post {
@@ -663,7 +663,7 @@ body:json {
 }
 
 script:pre-request {
-  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-folio-backend-admin-client");
 }
 
 settings {

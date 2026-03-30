@@ -1,7 +1,7 @@
 meta {
   name: Delete modules discovery
   type: http
-  seq: 32
+  seq: 24
 }
 
 delete {
@@ -115,7 +115,7 @@ body:json {
 }
 
 script:pre-request {
-  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-folio-backend-admin-client");
 }
 
 settings {

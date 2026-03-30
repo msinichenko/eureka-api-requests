@@ -1,29 +1,29 @@
 meta {
-  name: Enable application for tenant
+  name: Update application for tenant
   type: http
-  seq: 12
+  seq: 18
 }
 
-post {
-  url: https://kong-{{folio}}.{{domain}}/entitlements?async=true&purgeOnRollback=false&ignoreErrors=false
+put {
+  url: https://kong-{{folio}}.{{domain}}/entitlements?async=true
   body: json
   auth: inherit
 }
 
 params:query {
   async: true
-  purgeOnRollback: false
-  ignoreErrors: false
+  ~purgeOnRollback: false
+  ~ignoreErrors: false
   ~tenantParameters: loadReference%3Dfalse%2CloadSample%3Dfalse%2CcentralTenantId%3Dcs00000int
 }
 
 headers {
-  x-okapi-token: {{master-realm-token}}
+  x-okapi-token: {{folio-backend-admin-client-token}}
 }
 
 body:json {
   {
-    "tenantId": "08b8f651-ccde-4fa0-a8ce-127bd22e5cfe",
+    "tenantId": "d4d00ba3-bab1-48fd-b098-2a280e24c850",
     "applications": [
       "app-dcb-1.1.9-Patch.1"
     ]

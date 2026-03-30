@@ -5,15 +5,15 @@ meta {
 }
 
 get {
-  url: https://kong-{{folio}}.{{domain}}/applications?limit=300
+  url: https://kong-{{folio}}.{{domain}}/applications?limit=300&query=id=app-dcb-1.1.9
   body: none
   auth: inherit
 }
 
 params:query {
   limit: 300
+  query: id=app-dcb-1.1.9
   ~query: name={{realm}}
-  ~query: id=app-platform-complete-2.1.5
 }
 
 headers {
@@ -21,7 +21,7 @@ headers {
 }
 
 script:pre-request {
-  // const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+  // const res = await bru.runRequest("auth/get-keycloak-master-realm-folio-backend-admin-client");
 }
 
 settings {

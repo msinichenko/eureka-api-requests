@@ -1,7 +1,7 @@
 meta {
   name: Disable application for tenant
   type: http
-  seq: 13
+  seq: 8
 }
 
 delete {
@@ -26,7 +26,7 @@ body:json {
 }
 
 script:pre-request {
-  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-folio-backend-admin-client");
 }
 
 settings {

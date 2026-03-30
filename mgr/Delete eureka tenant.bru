@@ -1,7 +1,7 @@
 meta {
   name: Delete eureka tenant
   type: http
-  seq: 11
+  seq: 6
 }
 
 delete {
@@ -19,7 +19,7 @@ headers {
 }
 
 script:post-response {
-  const res = await bru.runRequest("auth/get-keycloak-master-realm-admin-token");
+  const res = await bru.runRequest("auth/get-keycloak-master-realm-folio-backend-admin-client");
 }
 
 settings {
