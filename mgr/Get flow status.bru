@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: https://kong-{{folio}}.{{domain}}/entitlement-flows/:flow_di?includeStages=true
+  url: https://kong-{{folio}}.{{domain}}/entitlement-flows/:flow_id?includeStages=true
   body: none
   auth: inherit
 }
@@ -15,7 +15,7 @@ params:query {
 }
 
 params:path {
-  flow_di: 6a27fc20-46cb-493d-84ba-b01c0152c856
+  flow_id: some_id
 }
 
 headers {
