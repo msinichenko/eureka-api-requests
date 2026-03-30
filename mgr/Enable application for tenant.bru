@@ -1,7 +1,7 @@
 meta {
   name: Enable application for tenant
   type: http
-  seq: 12
+  seq: 10
 }
 
 post {
@@ -23,7 +23,7 @@ headers {
 
 body:json {
   {
-    "tenantId": "08b8f651-ccde-4fa0-a8ce-127bd22e5cfe",
+    "tenantId": "{{tenant_id}}",
     "applications": [
       "app-dcb-1.1.9-Patch.1"
     ]

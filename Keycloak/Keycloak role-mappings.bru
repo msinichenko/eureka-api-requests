@@ -5,13 +5,13 @@ meta {
 }
 
 post {
-  url: https://keycloak-{{folio}}.int.aws.folio.org/admin/realms/master/users/:userid/role-mappings/realm
+  url: https://keycloak-{{folio}}.{{domain}}/admin/realms/master/users/:userid/role-mappings/realm
   body: json
   auth: bearer
 }
 
 params:path {
-  userid: b2f0a315-1fbf-481e-89fa-62ae95a07c51
+  userid: {{some_user_id}}
 }
 
 auth:bearer {
@@ -19,7 +19,7 @@ auth:bearer {
 }
 
 body:json {
-  [{"id": "5ee5b5b1-5b90-4135-b329-db0280cd9f5f", "name": "admin"}]
+  [{"id": "{{some_role_id}}", "name": "admin"}]
 }
 
 settings {

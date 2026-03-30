@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: https://keycloak-{{folio}}.int.aws.folio.org/admin/realms/master/users
+  url: https://keycloak-{{folio}}.{{domain}}/admin/realms/master/users
   body: json
   auth: bearer
 }
@@ -18,7 +18,7 @@ body:json {
   {
     "username": "test123",
     "realmRoles": [
-      "5ee5b5b1-5b90-4135-b329-db0280cd9f5f"
+      "{{some_realm_role}}"
     ],
     "credentials": [
       {

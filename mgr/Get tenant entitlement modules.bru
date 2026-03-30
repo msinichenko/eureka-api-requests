@@ -1,7 +1,7 @@
 meta {
   name: Get tenant entitlement modules
   type: http
-  seq: 15
+  seq: 13
 }
 
 get {
@@ -21,37 +21,7 @@ headers {
 }
 
 script:pre-request {
-  var keycloakUrl = `https://keycloak-${bru.getEnvVar('folio')}.${bru.getEnvVar('domain')}/realms/${bru.getEnvVar('realm')}/protocol/openid-connect/token`;
-  
-  
-  // pm.sendRequest({
-      url: keycloakUrl,
-      method: 'POST',
-      header: {
-          'content-type': 'application/x-www-form-urlencoded'
-      },
-      body: {
-          mode: 'urlencoded',
-          urlencoded: [
-              {key: 'grant_type', value: 'client_credentials'},
-              {key: 'client_id', value: 'folio-backend-admin-client'},
-              {key: 'client_secret', value: bru.getEnvVar('admin_client_secret')}
-          ]
-      }
-  }, (err, res) => bru.setEnvVar("okapi-token", res.json().access_token));
-  
-  // // kong url
-  // var kongUrl = `https://kong-${bru.getEnvVar('folio')}.${bru.getEnvVar('domain')}/tenants?query=name=${bru.getEnvVar('realm')}`;
-  // // pm.sendRequest({
-  //     url: kongUrl,
-  //     method: 'GET',
-  //     header: {
-  //         'content-type': 'application/x-www-form-urlencoded'
-  //     },
-  //     body: {
-  //         mode: 'none',
-  //     }
-  // }, (err, res) => bru.setEnvVar("tenant_id", res.json().tenants[0].id));
+  // const res = await bru.runRequest("auth/get-keycloak-master-realm-folio-backend-admin-client");
 }
 
 settings {

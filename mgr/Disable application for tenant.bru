@@ -1,7 +1,7 @@
 meta {
   name: Disable application for tenant
   type: http
-  seq: 8
+  seq: 7
 }
 
 delete {
@@ -20,7 +20,7 @@ headers {
 
 body:json {
   {
-      "tenantId": "7d85d885-04d4-400e-b5a1-0601c1132452",
+      "tenantId": "{{tenant_id}}",
       "applications": ["app-platform-complete-0.0.8"]
   }
 }

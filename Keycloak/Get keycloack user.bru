@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: https://keycloak-{{folio}}.int.aws.folio.org/admin/realms/{{realm}}/users
+  url: https://keycloak-{{folio}}.{{domain}}/admin/realms/{{realm}}/users
   body: text
   auth: bearer
 }

@@ -1,7 +1,7 @@
 meta {
   name: Delete tenant entitlements
   type: http
-  seq: 19
+  seq: 18
 }
 
 delete {
@@ -20,7 +20,7 @@ headers {
 
 body:json {
   {
-    "tenantId" : "d70f920c-7d5c-4161-a0f4-0eb96b143aa2",
+    "tenantId" : "{{tenant_id}}",
     "applications" : ["app-acquisitions-1.2.0-SNAPSHOT.1090","app-platform-complete-3.0.1-SNAPSHOT.1152","app-platform-minimal-2.1.0-SNAPSHOT.1069"]
   }
 }

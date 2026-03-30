@@ -1,11 +1,11 @@
 meta {
   name: Get app descriptor
   type: http
-  seq: 22
+  seq: 21
 }
 
 get {
-  url: https://kong-{{folio}}.{{domain}}/applications/
+  url: https://kong-{{folio}}.{{domain}}/applications
   body: json
   auth: none
 }
@@ -111,24 +111,7 @@ body:json {
 }
 
 script:pre-request {
-  var keycloakUrl = `https://keycloak-${bru.getEnvVar('folio')}.${bru.getEnvVar('domain')}/realms/${bru.getEnvVar('realm')}/protocol/openid-connect/token`;
-  
-  
-  // pm.sendRequest({
-      url: keycloakUrl,
-      method: 'POST',
-      header: {
-          'content-type': 'application/x-www-form-urlencoded'
-      },
-      body: {
-          mode: 'urlencoded',
-          urlencoded: [
-              {key: 'grant_type', value: 'client_credentials'},
-              {key: 'client_id', value: bru.getEnvVar('admin_client')},
-              {key: 'client_secret', value: bru.getEnvVar('admin_client_secret')}
-          ]
-      }
-  }, (err, res) => bru.setEnvVar("okapi-token", res.json().access_token));
+  // const res = await bru.runRequest("auth/get-keycloak-master-realm-folio-backend-admin-client");
 }
 
 settings {

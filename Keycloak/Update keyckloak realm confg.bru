@@ -5,7 +5,7 @@ meta {
 }
 
 put {
-  url: https://keycloak-{{folio}}.int.aws.folio.org/admin/realms/{{realm}}
+  url: https://keycloak-{{folio}}.{{domain}}/admin/realms/{{realm}}
   body: json
   auth: bearer
 }

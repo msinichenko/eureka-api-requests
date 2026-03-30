@@ -5,9 +5,13 @@ meta {
 }
 
 put {
-  url: https://keycloak-{{folio}}.int.aws.folio.org/admin/realms/{{realm}}/clients/189fa605-2556-43e0-9f25-438e58ee329e
+  url: https://keycloak-{{folio}}.{{domain}}/admin/realms/{{realm}}/clients/:client_id
   body: json
   auth: bearer
+}
+
+params:path {
+  client_id: {{some_clientid}}
 }
 
 headers {
