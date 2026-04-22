@@ -1,7 +1,7 @@
 meta {
-  name: Get application
+  name: Get application by id
   type: http
-  seq: 4
+  seq: 5
 }
 
 get {
@@ -10,10 +10,15 @@ get {
   auth: inherit
 }
 
+params:query {
+  ~full: true
+}
+
 params:path {
-  app_id: app-platform-complete-2.2.12
+  app_id: app-erm-usage-2.0.3
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

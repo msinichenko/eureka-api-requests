@@ -1,18 +1,18 @@
 meta {
   name: Get appications
   type: http
-  seq: 14
+  seq: 3
 }
 
 get {
-  url: https://kong-{{folio}}.{{domain}}/applications?limit=300&query=id=app-dcb-1.1.9
+  url: https://kong-{{folio}}.{{domain}}/applications?limit=300
   body: none
   auth: inherit
 }
 
 params:query {
   limit: 300
-  query: id=app-dcb-1.1.9
+  ~query: id=app-dcb-1.1.9
   ~query: name={{realm}}
 }
 
