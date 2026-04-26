@@ -27,9 +27,7 @@ body:json {
   }
 }
 
-script:pre-request {
-  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
-}settings {
+settings {
   encodeUrl: true
   timeout: 0
 }

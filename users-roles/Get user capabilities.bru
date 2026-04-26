@@ -20,9 +20,7 @@ headers {
   x-okapi-tenant: {{realm}}
 }
 
-script:pre-request {
-  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
-}script:post-response {
+script:post-response {
   // // const jsonData = pm.response.json();
   // // pm.environment.set("role_id", jsonData.roles[0].id);
 }
