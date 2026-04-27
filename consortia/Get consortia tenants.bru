@@ -1,7 +1,7 @@
 meta {
   name: Get consortia tenants
   type: http
-  seq: 8
+  seq: 3
 }
 
 get {
@@ -25,26 +25,26 @@ headers {
   x-okapi-tenant: {{realm}}
 }
 
-script:post-response {
-  const tenants = res.body?.tenants;
-  const centralTenant = Array.isArray(tenants)
-    ? tenants.find((tenant) => tenant?.isCentral === true)
-    : null;
-
-  if (centralTenant?.id) {
-    bru.setGlobalEnvVar("consortia_central_tenant_id", centralTenant.id, { persist: true });
-    console.log("consortia_central_tenant_id saved");
-  } else {
-    console.warn("Central tenant not found in response");
-  }
-}
-
 body:json {
   {
       "id": "mstestinst1",
       "name": "mstestinst1",
       "code": "MTO",
       "isCentral": false
+  }
+}
+
+script:post-response {
+  const tenants = res.body?.tenants;
+  const centralTenant = Array.isArray(tenants)
+    ? tenants.find((tenant) => tenant?.isCentral === true)
+    : null;
+  
+  if (centralTenant?.id) {
+    bru.setGlobalEnvVar("consortia_central_tenant_id", centralTenant.id, { persist: true });
+    console.log("consortia_central_tenant_id saved");
+  } else {
+    console.warn("Central tenant not found in response");
   }
 }
 

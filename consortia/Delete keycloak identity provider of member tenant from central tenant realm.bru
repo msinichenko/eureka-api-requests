@@ -1,12 +1,12 @@
 meta {
-  name: Delete consortia tenant
+  name: Delete keycloak identity provider of member tenant from central tenant realm
   type: http
-  seq: 10
+  seq: 14
 }
 
 delete {
-  url: https://kong-{{folio}}.{{domain}}/consortia/:consortia_id/tenants/:tenant_id
-  body: json
+  url: https://kong-{{folio}}.{{domain}}/consortia/{{consortia_id}}/tenants/:member_tenant_id/identity-provider
+  body: none
   auth: none
 }
 
@@ -16,8 +16,7 @@ params:query {
 }
 
 params:path {
-  consortia_id: {{consortia_id}}
-  tenant_id: {{member_tenant_id}}
+  member_tenant_id: cs00000tst_0001
 }
 
 headers {
