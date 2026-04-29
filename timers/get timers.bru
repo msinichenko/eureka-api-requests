@@ -18,9 +18,277 @@ params:query {
 headers {
   x-okapi-tenant: {{realm}}
   x-okapi-token: {{okapi-token}}
+  ~x-okapi-token: {{folio-user-token}}
+  ~x-okapi-tenant: {{member_tenant_id}}
+}
+
+script:post-response {
+  // Parse response body
+    const response = res.getBody();
+    const items = response.timerDescriptors || [];
+    
+    // Step 1: Get all objects with "enabled": false
+    const disabledObjects = items.filter(obj => obj.enabled === false);
+    const disabledIds = disabledObjects.map(obj => obj.id);
+    
+    // Step 2: For each disabled object, find enabled objects with the same pathPattern
+    const conflicts = [];
+    const orphans = [];
+    
+    disabledObjects.forEach(disabledObj => {
+      const pathPattern = disabledObj.routingEntry?.pathPattern;
+      
+      const matchingEnabled = items.filter(obj =>
+        obj.enabled === true &&
+        obj.routingEntry?.pathPattern === pathPattern
+      );
+      
+      const conflictEntry = {
+        pathPattern: pathPattern,
+        disabledId: disabledObj.id,
+        disabled: {
+          id: disabledObj.id,
+          type: disabledObj.type,
+          moduleId: disabledObj.moduleId
+        },
+        enabledMatches: matchingEnabled.map(m => ({
+          id: m.id,
+          type: m.type,
+          moduleId: m.moduleId
+        }))
+      };
+      
+      if (matchingEnabled.length > 0) {
+        conflicts.push(conflictEntry);
+      } else {
+        orphans.push(conflictEntry);
+      }
+    });
+    
+    // Save to Bruno variables
+    bru.setVar("disabledTimerIds", JSON.stringify(disabledIds));
+    bru.setVar("pathPatternConflicts", JSON.stringify(conflicts));
+    bru.setVar("orphanedDisabled", JSON.stringify(orphans));
+    
+    // ===== TESTS — visible in Test Results panel =====
+    
+    test(`Total timers: ${items.length}`, function() {
+      expect(items.length).to.be.greaterThan(0);
+    });
+    
+    test(`Disabled timer IDs (${disabledIds.length}): ${JSON.stringify(disabledIds, null, 2)}`, function() {
+      expect(disabledIds).to.be.an('array');
+    });
+    
+    test(`Conflicts found (${conflicts.length}): ${JSON.stringify(conflicts, null, 2)}`, function() {
+      expect(conflicts).to.be.an('array');
+    });
+    
+    test(`Orphaned disabled timers (no enabled replacement): ${JSON.stringify(orphans, null, 2)}`, function() {
+      expect(orphans.length).to.equal(0);
+    });
+    
+    // Per-conflict test — one row per pathPattern in results panel
+    conflicts.forEach((c, idx) => {
+      test(`[${idx + 1}] ${c.pathPattern} → disabled=${c.disabledId} | enabled=${c.enabledMatches.map(m => m.id).join(', ')}`, function() {
+        expect(c.enabledMatches.length).to.be.greaterThan(0);
+      });
+    });
+    
+    // Full summary as a single test entry
+    const summary = {
+      totalTimers: items.length,
+      disabledCount: disabledObjects.length,
+      conflictsCount: conflicts.length,
+      orphansCount: orphans.length,
+      disabledIds: disabledIds
+    };
+    
+    test(`SUMMARY: ${JSON.stringify(summary, null, 2)}`, function() {
+      expect(summary.orphansCount).to.equal(0);
+    });
 }
 
 settings {
   encodeUrl: true
   timeout: 0
+}
+
+docs {
+  # 📄 Request Documentation: `get timers`
+  
+  ---
+  
+  ## Overview
+  
+  | Field | Value |
+  |---|---|
+  | **Name** | `get timers` |
+  | **Method** | `GET` |
+  | **Sequence** | `1` |
+  | **Module** | FOLIO Scheduler (`mod-scheduler`) |
+  | **Purpose** | Retrieves all scheduler timer descriptors and detects disabled timers that have an active replacement with the same `pathPattern` |
+  
+  ---
+  
+  ## Endpoint
+  
+  ```
+  GET https://kong-{{folio}}.{{domain}}/scheduler/timers
+  ```
+  
+  ### Query Parameters
+  
+  | Parameter | Value | Active | Description |
+  |---|---|---|---|
+  | `limit` | `500` | ✅ | Maximum number of timer records to return |
+  | `query` | `enabled==false` | ❌ (disabled) | Optional CQL filter to fetch only disabled timers — currently fetching all timers for client-side analysis |
+  
+  > **Note:** The `query` parameter is currently **commented out** (`~query`), so the request fetches **all timers** (up to 500). The filtering is handled in the post-response script instead.
+  
+  ---
+  
+  ## Headers
+  
+  | Header | Value | Active | Description |
+  |---|---|---|---|
+  | `x-okapi-tenant` | `{{realm}}` | ✅ | FOLIO tenant identifier (primary) |
+  | `x-okapi-token` | `{{okapi-token}}` | ✅ | Okapi system authentication token |
+  | `x-okapi-token` | `{{folio-user-token}}` | ❌ (disabled) | Alternative user-level token |
+  | `x-okapi-tenant` | `{{member_tenant_id}}` | ❌ (disabled) | Alternative tenant ID for consortium member |
+  
+  > **Note:** Disabled headers (`~`) can be quickly toggled on for **consortium/ECS environments** where member tenant context is required.
+  
+  ---
+  
+  ## Environment Variables
+  
+  | Variable | Description |
+  |---|---|
+  | `{{folio}}` | FOLIO environment name (e.g., `snapshot`, `bugfest`) |
+  | `{{domain}}` | Base domain of the environment (e.g., `dev.folio.org`) |
+  | `{{realm}}` | Primary tenant identifier |
+  | `{{okapi-token}}` | System-level Okapi authentication token |
+  | `{{folio-user-token}}` | User-level JWT token (alternative auth) |
+  | `{{member_tenant_id}}` | Consortium member tenant ID (alternative tenant) |
+  
+  ---
+  
+  ## Response
+  
+  ### Structure
+  
+  ```json
+  {
+    "timerDescriptors": [
+      {
+        "id": "string (UUID)",
+        "type": "system | user",
+        "modified": "boolean (optional)",
+        "routingEntry": {
+          "methods": ["POST | GET | DELETE"],
+          "pathPattern": "/module/endpoint",
+          "unit": "minute | hour | day (optional)",
+          "delay": "string (optional)",
+          "schedule": {
+            "cron": "cron expression (optional)",
+            "zone": "timezone (optional)"
+          }
+        },
+        "enabled": "boolean",
+        "moduleName": "string",
+        "moduleId": "string"
+      }
+    ],
+    "totalRecords": "integer"
+  }
+  ```
+  
+  ### Key Fields
+  
+  | Field | Type | Description |
+  |---|---|---|
+  | `id` | UUID | Unique identifier of the timer descriptor |
+  | `type` | `system` / `user` | Origin type of the timer |
+  | `modified` | boolean | Whether the timer was manually modified |
+  | `routingEntry.pathPattern` | string | API endpoint the timer triggers |
+  | `routingEntry.methods` | array | HTTP methods used by the timer |
+  | `routingEntry.unit` | string | Time unit for delay-based scheduling |
+  | `routingEntry.delay` | string | Delay value for the scheduled trigger |
+  | `routingEntry.schedule.cron` | string | Cron expression for cron-based scheduling |
+  | `enabled` | boolean | Whether the timer is currently active |
+  | `moduleName` | string | Short module name (e.g., `mod-circulation`) |
+  | `moduleId` | string | Full versioned module ID |
+  
+  ---
+  
+  ## Post-Response Script Logic
+  
+  The script performs **client-side analysis** on the full response in two steps:
+  
+  ### Step 1 — Identify Disabled Timers
+  Filters all `timerDescriptors` where `enabled === false` and collects their `id`s.
+  
+  ### Step 2 — Detect Conflicts & Orphans
+  For each disabled timer, searches for another timer with:
+  - The **same** `routingEntry.pathPattern`
+  - `enabled === true`
+  
+  Results are split into two categories:
+  
+  | Category | Description |
+  |---|---|
+  | **Conflicts** | Disabled timer that has an active replacement with the same `pathPattern` (e.g., after a module upgrade) |
+  | **Orphans** | Disabled timer with **no** active replacement — potentially a misconfiguration or missing module |
+  
+  ---
+  
+  ## Bruno Variables Set by Script
+  
+  These variables are available for use in subsequent requests within the same collection run:
+  
+  | Variable | Type | Description |
+  |---|---|---|
+  | `disabledTimerIds` | `JSON string` | Array of UUIDs of all disabled timers |
+  | `pathPatternConflicts` | `JSON string` | Array of conflict objects (disabled + enabled match pairs) |
+  | `orphanedDisabled` | `JSON string` | Array of disabled timers with no enabled counterpart |
+  
+  ---
+  
+  ## Test Results
+  
+  | Test | Pass Condition | Fail Condition |
+  |---|---|---|
+  | `Total timers: N` | Response contains at least 1 timer | Empty response |
+  | `Disabled timer IDs (N)` | IDs array is valid | Parsing error |
+  | `Conflicts found (N)` | Conflicts array is valid | Parsing error |
+  | `Orphaned disabled timers` | ✅ `orphans.length === 0` | ❌ Any disabled timer has no enabled replacement |
+  | `[N] /path → disabled=... \| enabled=...` | Each conflict has ≥ 1 enabled match | Match missing |
+  | `SUMMARY` | ✅ `orphansCount === 0` | ❌ Orphaned timers exist |
+  
+  > ⚠️ The **Orphaned disabled timers** and **SUMMARY** tests will **fail (red)** if any disabled timer has
+  > no enabled replacement — this is intentional and acts as an alert for investigation.
+  
+  ---
+  
+  ## Settings
+  
+  | Setting | Value | Description |
+  |---|---|---|
+  | `encodeUrl` | `true` | Automatically URL-encodes query parameters |
+  | `timeout` | `0` | No request timeout (waits indefinitely) |
+  
+  ---
+  
+  ## Common Use Cases
+  
+  - 🔍 **Post-upgrade audit** — Verify that old module timer versions (disabled) have been properly replaced by new enabled versions after a FOLIO upgrade
+  - 🧹 **Cleanup identification** — Find all disabled timer IDs to be removed via subsequent `DELETE` requests
+  - 🏥 **Health check** — Detect orphaned disabled timers that may indicate a missing or misconfigured module
+  
+  ---
+  
+  > 💡 **Tip:** To filter only disabled timers at the API level instead of client-side, enable the `~query`
+  > parameter by removing the `~` prefix. This reduces payload size when the environment has a large
+  > number of timers.
 }

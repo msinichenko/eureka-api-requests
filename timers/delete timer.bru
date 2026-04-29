@@ -22,6 +22,8 @@ params:path {
 headers {
   x-okapi-tenant: {{realm}}
   x-okapi-token: {{okapi-token}}
+  ~x-okapi-token: {{folio-user-token}}
+  ~x-okapi-tenant: {{member_tenant_id}}
 }
 
 settings {
