@@ -4,20 +4,29 @@ meta {
   seq: 3
 }
 
-get {
-  url: https://kong-{{folio}}.{{domain}}/scheduler/timers?limit=500
-  body: none
+post {
+  url: https://kong-{{folio}}.{{domain}}/scheduler/timers
+  body: json
   auth: none
-}
-
-params:query {
-  limit: 500
-  ~query: enabled==false
 }
 
 headers {
   x-okapi-tenant: {{realm}}
   x-okapi-token: {{okapi-token}}
+}
+
+body:json {
+  {
+    "type": "system",
+    "moduleId": "mod-example-1.0.0",
+    "routingEntry": {
+      "pathPattern": "/example/*",
+      "methods": ["POST"],
+      "delay": "10",
+      "unit": "second"
+    },
+    "enabled": true
+  }
 }
 
 settings {
