@@ -74,6 +74,16 @@ Bruno collection for FOLIO/Eureka operational and migration requests — Keycloa
 - Requests with path parameters (e.g. `:consortia_id`, `:applicationId`) require you to fill in the value in the **Params** tab before running.
 - Query parameters prefixed with `~` in the `.bru` source are **disabled** — enable them in Bruno's Params tab if needed.
 
+## Linting
+
+Run the collection lint before committing request changes:
+
+```sh
+bash scripts/lint-bruno.sh
+```
+
+The lint checks for common collection hygiene issues: hardcoded UUIDs, persisted global token writes, scratch request names, local test data, and common spelling mistakes. A failure means the output should be reviewed and either replaced with environment variables or intentionally cleaned up before commit.
+
 ## Security
 
 - **Credentials go in Bruno environment variables only** — never hardcode them in request files.
