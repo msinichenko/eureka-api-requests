@@ -1,0 +1,27 @@
+vars {
+  folio: dev
+  domain: example.org
+  realm: mytenant
+  tenant_client: mytenant-application
+  tenant_client_secret: REPLACE_ME
+  admin_client: folio-backend-admin-client
+  admin_client_secret: REPLACE_ME
+  keycloak_username: admin
+  keycloak_password: REPLACE_ME
+  tenant_username: diku_admin
+  tenant_password: REPLACE_ME
+  tenant_id:
+  consortia_id:
+  baseUrl: https://your-gteway-url 
+}
+
+vars:secret [
+  tenant_client_secret,
+  admin_client_secret,
+  keycloak_password,
+  tenant_password,
+  okapi-token,
+  master-realm-token,
+  folio-user-token,
+  folio-backend-admin-client-token
+]

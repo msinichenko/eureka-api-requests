@@ -1,5 +1,5 @@
 # Bruno environments contain credentials - never commit real environments
-environments/
+environments/*
 
 # Allow the example/template environment so new team members have a reference
 !environments/example.bru
@@ -14,5 +14,8 @@ Thumbs.db
 
 # Editor artifacts
 .vscode/
+.claude/
+.codemie/
+CLAUDE.md
 *.swp
 *~
