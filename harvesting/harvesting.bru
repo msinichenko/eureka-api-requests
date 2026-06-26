@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: https://edge-{{tenant_prefix}}.{{domain}}/oai/records?verb=ListRecords&metadataPrefix=marc21&apiKey={{edge_key}}
+  url: https://edge-{{tenant_prefix}}.{{domain}}/oai/records
   body: none
   auth: inherit
 }
@@ -14,6 +14,10 @@ params:query {
   verb: ListRecords
   metadataPrefix: marc21
   apiKey: {{edge_key}}
+  ~from: 2024-01-01
+  ~until: 2024-12-31
+  ~set:
+  ~resumptionToken:
 }
 
 settings {
