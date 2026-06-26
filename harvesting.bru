@@ -1,0 +1,22 @@
+meta {
+  name: harvesting
+  type: http
+  seq: 25
+}
+
+get {
+  url: https://edge-{{tenant_prefix}}.{{domain}}/oai/records?verb=ListRecords&metadataPrefix=marc21&apiKey={{edge_key}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  verb: ListRecords
+  metadataPrefix: marc21
+  apiKey: {{edge_key}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
