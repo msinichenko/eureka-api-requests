@@ -25,7 +25,7 @@ headers {
 
 script:post-response {
   const jsonData = res.getBody();
-  bru.setEnvVar("user_id", jsonData.users[0].id);
+  bru.setGlobalEnvVar("user_id", jsonData.users[0].id);
 }
 
 settings {
