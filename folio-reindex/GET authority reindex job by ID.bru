@@ -1,0 +1,25 @@
+meta {
+  name: GET authority reindex job by ID
+  type: http
+  seq: 6
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/authority-storage/reindex/:jobId
+  body: none
+  auth: none
+}
+
+params:path {
+  jobId: REPLACE_WITH_JOB_ID
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

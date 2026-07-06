@@ -1,0 +1,25 @@
+meta {
+  name: DELETE authority reindex job
+  type: http
+  seq: 8
+}
+
+delete {
+  url: https://kong-{{folio}}.{{domain}}/authority-storage/reindex/:jobId
+  body: none
+  auth: none
+}
+
+params:path {
+  jobId: REPLACE_WITH_JOB_ID
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
