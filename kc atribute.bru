@@ -1,0 +1,196 @@
+meta {
+  name: Update Realm Unmanaged Attributes Policy
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{keycloak_url}}/admin/realms/{{realm_name}}/users/profile
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{admin_access_token}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "attributes": [
+      {
+        "name": "username",
+        "displayName": "${username}",
+        "validations": {
+          "length": {
+            "min": 3,
+            "max": 255
+          },
+          "username-prohibited-characters": {},
+          "up-username-not-idn-homograph": {}
+        },
+        "permissions": {
+          "view": [
+            "admin",
+            "user"
+          ],
+          "edit": [
+            "admin",
+            "user"
+          ]
+        },
+        "multivalued": false
+      },
+      {
+        "name": "email",
+        "displayName": "${email}",
+        "validations": {
+          "email": {},
+          "length": {
+            "max": 255
+          }
+        },
+        "required": {
+          "roles": [
+            "user"
+          ]
+        },
+        "permissions": {
+          "view": [
+            "admin",
+            "user"
+          ],
+          "edit": [
+            "admin",
+            "user"
+          ]
+        },
+        "multivalued": false
+      },
+      {
+        "name": "firstName",
+        "displayName": "${firstName}",
+        "validations": {
+          "length": {
+            "max": 255
+          },
+          "person-name-prohibited-characters": {}
+        },
+        "required": {
+          "roles": [
+            "user"
+          ]
+        },
+        "permissions": {
+          "view": [
+            "admin",
+            "user"
+          ],
+          "edit": [
+            "admin",
+            "user"
+          ]
+        },
+        "multivalued": false
+      },
+      {
+        "name": "lastName",
+        "displayName": "${lastName}",
+        "validations": {
+          "length": {
+            "max": 255
+          },
+          "person-name-prohibited-characters": {}
+        },
+        "required": {
+          "roles": [
+            "user"
+          ]
+        },
+        "permissions": {
+          "view": [
+            "admin",
+            "user"
+          ],
+          "edit": [
+            "admin",
+            "user"
+          ]
+        },
+        "multivalued": false
+      }
+    ],
+    "groups": [
+      {
+        "name": "user-metadata",
+        "displayHeader": "User metadata",
+        "displayDescription": "Attributes, which refer to user metadata"
+      }
+    ],
+    "unmanagedAttributePolicy": "ADMIN_EDIT"
+  }
+}
+
+vars:pre-request {
+  keycloak_url: http://localhost:8080
+  realm_name: my-realm
+}
+
+docs {
+  # Update Keycloak Realm - Unmanaged Attributes Policy
+  
+  This request updates the User Profile configuration for a Keycloak realm,
+  specifically setting the **Unmanaged Attributes** policy to **"Only Administrators can write"**.
+  
+  ## Endpoint
+  `PUT /admin/realms/{realm}/users/profile`
+  
+  ## Authentication
+  Requires a valid admin access token with realm management permissions.
+  
+  ## Unmanaged Attribute Policy Options:
+  - **ENABLED**: Unmanaged attributes are fully enabled and available from any context
+  - **ADMIN_VIEW**: Unmanaged attributes are only available as read-only and only through management interfaces
+  - **ADMIN_EDIT**: Unmanaged attributes are only available as read-write and only through management interfaces (administrators can write)
+  - **DISABLED**: Unmanaged attributes are disabled (default for new realms in Keycloak 24+)
+  
+  ## Important Notes:
+  1. You must provide the **complete** profile configuration including all existing attributes
+  2. First perform a GET request to retrieve the current profile, then modify and PUT it back
+  3. The `attributes` array should contain all user profile attributes you want to maintain
+  
+  ## Reference:
+  - Keycloak Admin REST API: https://www.keycloak.org/docs-api/latest/rest-api/
+  - UnmanagedAttributePolicy Enum: https://www.keycloak.org/docs-api/latest/javadocs/org/keycloak/representations/userprofile/config/UPConfig.UnmanagedAttributePolicy.html
+}
+
+script:pre-request {
+  // Note: Before running this PUT request, you should:
+  // 1. Get an admin access token
+  // 2. GET the current user profile configuration
+  // 3. Modify the unmanagedAttributePolicy field
+  // 4. PUT the updated configuration
+  
+  console.log('Updating realm user profile configuration...');
+  console.log('Setting unmanagedAttributePolicy to: ADMIN_EDIT');
+}
+
+script:post-response {
+  if (res.status === 200 || res.status === 204) {
+    console.log('✓ User profile configuration updated successfully!');
+    console.log('✓ Unmanaged Attributes Policy is now: ADMIN_EDIT (Only Administrators can write)');
+  } else {
+    console.log('✗ Failed to update configuration');
+    console.log('Status:', res.status);
+    console.log('Response:', res.body);
+  }
+}
+
+tests {
+  test("Status should be 200 or 204", function() {
+    expect([200, 204]).to.include(res.status);
+  });
+}
