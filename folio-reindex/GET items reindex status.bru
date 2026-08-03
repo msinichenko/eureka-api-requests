@@ -1,0 +1,21 @@
+meta {
+  name: GET items reindex status
+  type: http
+  seq: 13
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/search/index/item-records/reindex/status
+  body: none
+  auth: none
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

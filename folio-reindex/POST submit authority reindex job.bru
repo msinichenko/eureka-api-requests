@@ -1,0 +1,29 @@
+meta {
+  name: POST submit authority reindex job
+  type: http
+  seq: 7
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/authority-storage/reindex
+  body: json
+  auth: none
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "recreateIndex": false,
+    "resourceName": "authority"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,21 @@
+meta {
+  name: POST merge failed instance records
+  type: http
+  seq: 17
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/search/index/instance-records/reindex/merge/failed
+  body: none
+  auth: none
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

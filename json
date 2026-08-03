@@ -1,0 +1,104 @@
+[
+  {
+    "iterationIndex": 0,
+    "results": [
+      {
+        "test": {
+          "filename": "consortia/get consortia.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "https://kong-segcon.int.aws.folio.org/consortia",
+          "headers": {
+            "x-okapi-token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJVQmdoZUowd3drT2laXzQ2UXB6aGZYNWV2U1Jyb01uQVhmTk8xQWlDMUJVIn0.eyJleHAiOjE3Nzk5NjE2MDksImlhdCI6MTc3OTk1ODAwOSwianRpIjoidHJsdGNjOmVjMGNiZGQxLWQyNzItYzkwNi0wMWE5LTM5N2JhZGRhMDEzZCIsImlzcyI6Imh0dHBzOi8va2V5Y2xvYWstc2VnY29uLmludC5hd3MuZm9saW8ub3JnL3JlYWxtcy9jczAwMDAwMDAxIiwic3ViIjoiM2M5NmU1YjEtNTYyNS00MjA4LWFhMDAtYTE0OTQ1YmNiYzNlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoic2lkZWNhci1tb2R1bGUtYWNjZXNzLWNsaWVudCIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSJ9.eINep2y3BSfbc3Y7aU6vmPlJXe9SfP4Y2XCWUUmSZIzxcuVRd-FAWE-tW816nAqCC_rM1aQ8zBMJFBSTd6ABC0lU1c0sYEYN_sPsfqiup3-rcyjXzVd_SsUoz989MvreDDmGDUXbn7MqPo44D3nj1jO6bL-fF5N1Ur0WxhX1JJG-tr9zL1bKrHC0uDE-wOokT3HfNRRv7n5OkV048GXFpZm1NbvvilmrIUQ-kunh6HsAOOKCpzl_RFMQXNKZOpdwOJd3TP6C4hvZoCjasTQSmAh7CMNXediI9JFOATgB332gLKXZgn4fakWUyAzYoehEHatN5QFgGWVZebz3PBYXLw",
+            "x-okapi-tenant": "cs00000001",
+            "content-type": null
+          }
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {
+            "date": "Thu, 28 May 2026 08:46:51 GMT",
+            "content-type": "application/json",
+            "transfer-encoding": "chunked",
+            "connection": "close",
+            "access-control-allow-origin": "*",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+          },
+          "data": {
+            "consortia": [
+              {
+                "id": "f061b8b5-360d-45ad-b681-9428b6da3235",
+                "name": "MOBIUS"
+              }
+            ],
+            "totalRecords": 1
+          },
+          "url": "https://kong-segcon.int.aws.folio.org/consortia",
+          "responseTime": 1506,
+          "duration": 1506,
+          "size": 94
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [],
+        "testResults": [],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 2.510223583,
+        "name": "get consortia",
+        "path": "consortia/get consortia",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "users-roles/Put role capabilities.bru"
+        },
+        "request": {
+          "method": null,
+          "url": null,
+          "headers": null,
+          "data": null
+        },
+        "response": {
+          "status": "skipped",
+          "statusText": "Line 37, col 1:\n  36 | \n> 37 | ettings {\n       ^\n  38 |   encodeUrl: true\nExpected end of input, \"example\", \"docs\", \"settings\", \"tests\", \"script:post-response\", \"script:pre-request\", \"assert\", \"vars:post-response\", \"vars:pre-request\", \"body:ws\", \"body:grpc\", \"body\", \"body:file\", \"body:multipart-form\", \"body:form-urlencoded\", \"body:graphql:vars\", \"body:graphql\", \"body:sparql\", \"body:xml\", \"body:text\", \"body:json\", \"auth:oauth2:additional_params:refresh_token_req:body\", \"auth:oauth2:additional_params:refresh_token_req:queryparams\", \"auth:oauth2:additional_params:refresh_token_req:headers\", \"auth:oauth2:additional_params:access_token_req:body\", \"auth:oauth2:additional_params:access_token_req:queryparams\", \"auth:oauth2:additional_params:access_token_req:headers\", \"auth:oauth2:additional_params:auth_req:queryparams\", \"auth:oauth2:additional_params:auth_req:headers\", \"auth:apikey\", \"auth:wsse\", \"auth:oauth2\", \"auth:oauth1\", \"auth:ntlm\", \"auth:digest\", \"auth:bearer\", \"auth:basic\", \"auth:awsv4\", \"metadata\", \"headers\", \"params:query\", \"params:path\", \"query\", \"ws\", \"grpc\", \"http\", \"trace\", \"connect\", \"head\", \"options\", \"patch\", \"delete\", \"put\", \"post\", \"get\", or \"meta\"",
+          "data": null,
+          "responseTime": 0
+        },
+        "error": "Line 37, col 1:\n  36 | \n> 37 | ettings {\n       ^\n  38 |   encodeUrl: true\nExpected end of input, \"example\", \"docs\", \"settings\", \"tests\", \"script:post-response\", \"script:pre-request\", \"assert\", \"vars:post-response\", \"vars:pre-request\", \"body:ws\", \"body:grpc\", \"body\", \"body:file\", \"body:multipart-form\", \"body:form-urlencoded\", \"body:graphql:vars\", \"body:graphql\", \"body:sparql\", \"body:xml\", \"body:text\", \"body:json\", \"auth:oauth2:additional_params:refresh_token_req:body\", \"auth:oauth2:additional_params:refresh_token_req:queryparams\", \"auth:oauth2:additional_params:refresh_token_req:headers\", \"auth:oauth2:additional_params:access_token_req:body\", \"auth:oauth2:additional_params:access_token_req:queryparams\", \"auth:oauth2:additional_params:access_token_req:headers\", \"auth:oauth2:additional_params:auth_req:queryparams\", \"auth:oauth2:additional_params:auth_req:headers\", \"auth:apikey\", \"auth:wsse\", \"auth:oauth2\", \"auth:oauth1\", \"auth:ntlm\", \"auth:digest\", \"auth:bearer\", \"auth:basic\", \"auth:awsv4\", \"metadata\", \"headers\", \"params:query\", \"params:path\", \"query\", \"ws\", \"grpc\", \"http\", \"trace\", \"connect\", \"head\", \"options\", \"patch\", \"delete\", \"put\", \"post\", \"get\", or \"meta\"",
+        "status": "skipped",
+        "skipped": true,
+        "assertionResults": [],
+        "testResults": [],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "runDuration": 0,
+        "suitename": "users-roles/Put role capabilities",
+        "name": "Put role capabilities.bru",
+        "path": "users-roles/Put role capabilities.bru"
+      }
+    ],
+    "summary": {
+      "totalRequests": 2,
+      "passedRequests": 1,
+      "failedRequests": 0,
+      "errorRequests": 0,
+      "skippedRequests": 1,
+      "totalAssertions": 0,
+      "passedAssertions": 0,
+      "failedAssertions": 0,
+      "totalTests": 0,
+      "passedTests": 0,
+      "failedTests": 0,
+      "totalPreRequestTests": 0,
+      "passedPreRequestTests": 0,
+      "failedPreRequestTests": 0,
+      "totalPostResponseTests": 0,
+      "passedPostResponseTests": 0,
+      "failedPostResponseTests": 0
+    }
+  }
+]
