@@ -1,0 +1,26 @@
+meta {
+  name: mod-inventory-api-test
+  type: http
+  seq: 11
+}
+
+get {
+  url: https://kong-{{folio}}.{{domain}}/data-export/job-executions?limit=1&query=status==COMMITTED
+  body: none
+  auth: none
+}
+
+params:query {
+  limit: 1
+  query: status==COMMITTED
+}
+
+headers {
+  x-okapi-token: {{okapi-token}}
+  x-okapi-tenant: {{realm}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
