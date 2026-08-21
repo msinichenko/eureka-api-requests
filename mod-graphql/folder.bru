@@ -1,0 +1,12 @@
+meta {
+  name: mod-graphql
+  seq: 27
+}
+
+auth {
+  mode: inherit
+}
+
+script:pre-request {
+  const res = await bru.runRequest("auth/get-keycloak-tenant-token");
+}

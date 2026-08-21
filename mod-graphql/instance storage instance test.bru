@@ -1,0 +1,29 @@
+meta {
+  name: instance storage instance test
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://kong-{{folio}}.{{domain}}/graphql
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  x-okapi-tenant: {{realm}}
+  x-okapi-token: {{okapi-token}}
+}
+
+body:json {
+  {
+    "query": "{ instance_storage_instances(limit: 3) { totalRecords instances { id title } } }"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+  forwardAuthorizationHeader: false
+}
